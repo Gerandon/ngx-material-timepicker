@@ -42,11 +42,11 @@ export class TimeAdapter {
 
     static toLocaleTimeString(time: string, opts: TimeOptions = {}): string {
         const {format = TimeAdapter.DEFAULT_FORMAT, locale = TimeAdapter.DEFAULT_LOCALE} = opts;
-        const hourCycle = format === 24 ? 'h23' : 'h12';
-        const timeFormat = {...DateTime.TIME_SIMPLE, hourCycle};
+        const hourCycle: 'h23' | 'h12' = format === 24 ? 'h23' : 'h12';
+        const timeFormat: Intl.DateTimeFormatOptions = { ...DateTime.TIME_SIMPLE, hourCycle } as any;
         const timeMask = (format === 24) ? TimeFormat.TWENTY_FOUR_SHORT : TimeFormat.TWELVE_SHORT;
-        const localOpts = { locale: opts.locale, numberingSystem: opts.numberingSystem, ...timeFormat };
-        return DateTime.fromFormat(time, timeMask).setLocale(locale).toLocaleString(localOpts).replace(/\u202F/g, ' ');
+        const localOpts = { locale: opts.locale, numberingSystem: opts.numberingSystem, ...timeFormat } as any;
+        return DateTime.fromFormat(time, timeMask).setLocale(locale).toLocaleString(localOpts as any).replace(/\u202F/g, ' ');
     }
 
     static isTimeAvailable(
@@ -58,7 +58,7 @@ export class TimeAdapter {
         format?: number
     ): boolean {
         if (!time) {
-            return;
+            return false;
         }
 
         const convertedTime = this.parseTime(time, {format});

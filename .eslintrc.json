@@ -1,0 +1,37 @@
+{
+  "root": true,
+  "ignorePatterns": [
+    "dist/**/*",
+    "coverage/**/*",
+    "e2e/**/*"
+  ],
+  "overrides": [
+    {
+      "files": ["*.ts"],
+      "parserOptions": {
+        "project": ["tsconfig.json"],
+        "createDefaultProgram": true
+      },
+      "extends": [
+        "plugin:@angular-eslint/recommended"
+      ],
+      "rules": {
+        "@angular-eslint/no-input-rename": "off",
+        "@angular-eslint/no-host-metadata-property": "off"
+      }
+    },
+    {
+      "files": ["*.spec.ts"],
+      "rules": {
+        "@angular-eslint/component-class-suffix": "off"
+      }
+    },
+    {
+      "files": ["*.html"],
+      "extends": [
+        "plugin:@angular-eslint/template/recommended"
+      ],
+      "rules": {}
+    }
+  ]
+}

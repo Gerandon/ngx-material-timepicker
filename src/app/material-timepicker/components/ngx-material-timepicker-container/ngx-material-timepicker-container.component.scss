@@ -65,6 +65,25 @@
     }
 }
 
+/* Angular 22 animations (CSS) for timepicker enter/leave */
+@keyframes timepicker-enter-kf {
+    0% { transform: translateY(-30%); opacity: 0.9; }
+    100% { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes timepicker-leave-kf {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-30%); opacity: 0; }
+}
+
+.timepicker-enter {
+    animation: timepicker-enter-kf 200ms ease-out both;
+}
+
+.timepicker-leave {
+    animation: timepicker-leave-kf 200ms ease-out both;
+}
+
 @media (max-device-width: 1023px) and (orientation: landscape) {
     .timepicker {
         display: flex;

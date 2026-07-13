@@ -11,10 +11,12 @@
         <span class="tooltip">View source</span>
     </button>
 </header>
-<div class="source-code" [@slideToggle]="animationState">
+@if (animationState === 'active') {
+<div class="source-code" animate.enter="expand-in" animate.leave="collapse-out">
     <pre>
         <code>
             {{sourceCode}}
         </code>
     </pre>
 </div>
+}

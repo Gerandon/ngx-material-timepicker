@@ -6,7 +6,8 @@ import { DateTime } from 'luxon';
 type TimeMeasure = 'hour' | 'minute';
 
 @Pipe({
-    name: 'timeParser'
+    name: 'timeParser',
+    standalone: false
 })
 @Injectable()
 export class TimeParserPipe implements PipeTransform {

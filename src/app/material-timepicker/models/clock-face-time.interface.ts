@@ -1,5 +1,5 @@
 export interface ClockFaceTime {
-    time: number;
+    time: number | null;
     angle: number;
     disabled?: boolean;
 }

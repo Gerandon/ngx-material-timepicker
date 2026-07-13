@@ -34,7 +34,7 @@ describe('NgxMaterialTimepickerToggleComponent', () => {
     });
 
     it('should call open method for timepicker', () => {
-        const spy = spyOn(timepicker, 'open');
+        const spy = vi.spyOn(timepicker, 'open');
         component.timepicker = timepicker;
         component.open({stopPropagation: () => null});
 
@@ -42,7 +42,7 @@ describe('NgxMaterialTimepickerToggleComponent', () => {
     });
 
     it('should not call open method for timepicker if no timepicker provided', () => {
-        const spy = spyOn(timepicker, 'open');
+        const spy = vi.spyOn(timepicker, 'open');
         component.open({stopPropagation: () => null});
 
         expect(spy).toHaveBeenCalledTimes(0);

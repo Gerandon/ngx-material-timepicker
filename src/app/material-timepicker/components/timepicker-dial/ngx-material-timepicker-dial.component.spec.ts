@@ -24,8 +24,8 @@ describe('NgxMaterialTimepickerDialComponent', () => {
     });
 
     it('should call disableHours and disableMinutes on period change', () => {
-        const spyOnFunctionHours = spyOn(TimepickerTimeUtils, 'disableHours');
-        const spyOnFunctionMinutes = spyOn(TimepickerTimeUtils, 'disableMinutes');
+        const spyOnFunctionHours = vi.spyOn(TimepickerTimeUtils, 'disableHours');
+        const spyOnFunctionMinutes = vi.spyOn(TimepickerTimeUtils, 'disableMinutes');
         const changes: SimpleChanges = {
             period: {
                 currentValue: TimePeriod.AM,
@@ -41,7 +41,7 @@ describe('NgxMaterialTimepickerDialComponent', () => {
     });
 
     it('should call disableHours on format change', () => {
-        const spyOnFunctionHours = spyOn(TimepickerTimeUtils, 'disableHours');
+        const spyOnFunctionHours = vi.spyOn(TimepickerTimeUtils, 'disableHours');
         const changes: SimpleChanges = {
             format: {
                 currentValue: 24,
@@ -56,7 +56,7 @@ describe('NgxMaterialTimepickerDialComponent', () => {
     });
 
     it('should call disableMinutes on hour change', () => {
-        const spy = spyOn(TimepickerTimeUtils, 'disableMinutes');
+        const spy = vi.spyOn(TimepickerTimeUtils, 'disableMinutes');
         const changes: SimpleChanges = {
             hour: {
                 currentValue: 24,
@@ -71,8 +71,8 @@ describe('NgxMaterialTimepickerDialComponent', () => {
     });
 
     it('should not call disableHours and disableMinutes', () => {
-        const spyOnFunctionHours = spyOn(TimepickerTimeUtils, 'disableHours');
-        const spyOnFunctionMinutes = spyOn(TimepickerTimeUtils, 'disableMinutes');
+        const spyOnFunctionHours = vi.spyOn(TimepickerTimeUtils, 'disableHours');
+        const spyOnFunctionMinutes = vi.spyOn(TimepickerTimeUtils, 'disableMinutes');
         const changes: SimpleChanges = {
             minTime: {
                 currentValue: null,

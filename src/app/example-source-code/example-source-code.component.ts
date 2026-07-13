@@ -1,19 +1,11 @@
-import {Component, Input} from '@angular/core';
-import {animate, state, style, transition, trigger} from '@angular/animations';
+import {Component, Input, ChangeDetectionStrategy} from '@angular/core';
 
 @Component({
     selector: 'app-example-source-code',
     templateUrl: './example-source-code.component.html',
     styleUrls: ['./example-source-code.component.scss'],
-    animations: [
-        trigger('slideToggle', [
-            state('inactive', style({height: 0})),
-            state('active', style({height: '*'})),
-            transition('inactive <=> active', [
-                animate(300)
-            ])
-        ])
-    ]
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class ExampleSourceCodeComponent {
 

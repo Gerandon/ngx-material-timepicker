@@ -22,14 +22,14 @@ describe('AppendToInputDirective', () => {
             ]
         });
 
-        renderer = TestBed.get(Renderer2);
+        renderer = TestBed.inject(Renderer2);
         directive = new AppendToInputDirective(elementRef, renderer);
     });
 
     describe('Initial Init', () => {
 
         it(`should render element on 'top' direction`, () => {
-            const spy = spyOn(renderer, 'setStyle');
+            const spy = vi.spyOn(renderer, 'setStyle');
             Object.defineProperty(window, 'innerHeight', {value: 200});
             directive.inputElement = {
                 getBoundingClientRect: () => {
@@ -45,7 +45,7 @@ describe('AppendToInputDirective', () => {
         });
 
         it(`should render element on 'center' direction`, () => {
-            const spy = spyOn(renderer, 'setStyle');
+            const spy = vi.spyOn(renderer, 'setStyle');
             Object.defineProperty(window, 'innerHeight', {value: 200});
             directive.inputElement = {
                 getBoundingClientRect: () => {
@@ -61,7 +61,7 @@ describe('AppendToInputDirective', () => {
         });
 
         it(`should render element on 'bottom' direction`, () => {
-            const spy = spyOn(renderer, 'setStyle');
+            const spy = vi.spyOn(renderer, 'setStyle');
             Object.defineProperty(window, 'innerHeight', {value: 800});
             directive.inputElement = {
                 getBoundingClientRect: () => {
@@ -77,7 +77,7 @@ describe('AppendToInputDirective', () => {
         });
 
         it('should set css on ngAfterViewInit', () => {
-            const spy = spyOn(renderer, 'setStyle');
+            const spy = vi.spyOn(renderer, 'setStyle');
             Object.defineProperty(window, 'innerHeight', {value: 800});
             directive.inputElement = {
                 getBoundingClientRect: () => {

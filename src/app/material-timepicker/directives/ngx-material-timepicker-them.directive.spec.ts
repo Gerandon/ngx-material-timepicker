@@ -1,4 +1,4 @@
-import {Component, DebugElement, NO_ERRORS_SCHEMA} from '@angular/core';
+import {Component, DebugElement, NO_ERRORS_SCHEMA, ChangeDetectionStrategy} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {By} from '@angular/platform-browser';
 import {NgxMaterialTimepickerThemeDirective} from './ngx-material-timepicker-theme.directive';
@@ -6,7 +6,9 @@ import { NgxMaterialTimepickerTheme } from '../models/ngx-material-timepicker-th
 
 @Component({
     template: `
-        <div [ngxMaterialTimepickerTheme]="darkTheme"></div>`
+        <div [ngxMaterialTimepickerTheme]="darkTheme"></div>`,
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 class TestComponent {
     darkTheme: NgxMaterialTimepickerTheme = {

@@ -3,7 +3,7 @@
     <input class="ngx-timepicker-control__input"
            #timeControlTmpl
            maxlength="2"
-           [ngModel]="time | timeParser: timeUnit | timeLocalizer: timeUnit : true"
+           [ngModel]="(time ?? 0) | timeParser: timeUnit | timeLocalizer: timeUnit : true"
            (ngModelChange)="onModelChange($event)"
            [placeholder]="placeholder"
            [disabled]="disabled"

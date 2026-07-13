@@ -1,3 +1,3 @@
-<ngx-material-timepicker-face [faceTime]="minutesList" [selectedTime]="selectedMinute"
+<ngx-material-timepicker-face [faceTime]="minutesList" [selectedTime]="selectedMinute || undefined"
                               [minutesGap]="minutesGap"
                               (timeChange)="minuteChange.next($event)" [unit]="timeUnit.MINUTE"></ngx-material-timepicker-face>

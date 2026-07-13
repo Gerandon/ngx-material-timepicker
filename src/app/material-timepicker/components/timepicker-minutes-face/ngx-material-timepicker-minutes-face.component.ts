@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { ClockFaceTime } from '../../models/clock-face-time.interface';
 import { TimeUnit } from '../../models/time-unit.enum';
 import { TimePeriod } from '../../models/time-period.enum';
@@ -8,18 +8,20 @@ import { TimepickerTimeUtils } from '../../utils/timepicker-time.utils';
 
 @Component({
     selector: 'ngx-material-timepicker-minutes-face',
-    templateUrl: './ngx-material-timepicker-minutes-face.component.html'
+    templateUrl: './ngx-material-timepicker-minutes-face.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class NgxMaterialTimepickerMinutesFaceComponent implements OnChanges {
 
     minutesList: ClockFaceTime[] = [];
     timeUnit = TimeUnit;
 
-    @Input() selectedMinute: ClockFaceTime;
+    @Input() selectedMinute: ClockFaceTime | null;
     @Input() selectedHour: number;
-    @Input() period: TimePeriod;
-    @Input() minTime: DateTime;
-    @Input() maxTime: DateTime;
+    @Input() period: TimePeriod | null;
+    @Input() minTime?: DateTime;
+    @Input() maxTime?: DateTime;
     @Input() format: number;
     @Input() minutesGap: number;
 
@@ -32,7 +34,7 @@ export class NgxMaterialTimepickerMinutesFaceComponent implements OnChanges {
                 min: this.minTime,
                 max: this.maxTime,
                 format: this.format,
-                period: this.period
+                period: this.period ?? undefined
             });
         }
     }

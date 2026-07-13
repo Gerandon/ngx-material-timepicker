@@ -3,7 +3,8 @@ import { AfterViewInit, Directive, ElementRef, HostListener, Input, Renderer2 } 
 type TimepickerDirection = 'top' | 'center' | 'bottom';
 
 @Directive({
-    selector: '[ngxAppendToInput]'
+    selector: '[ngxAppendToInput]',
+    standalone: false
 })
 export class AppendToInputDirective implements AfterViewInit {
 

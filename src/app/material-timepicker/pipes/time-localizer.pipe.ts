@@ -6,7 +6,8 @@ import { DateTime } from 'luxon';
 type TimeMeasure = 'hour' | 'minute';
 
 @Pipe({
-    name: 'timeLocalizer'
+    name: 'timeLocalizer',
+    standalone: false
 })
 export class TimeLocalizerPipe implements PipeTransform {
 

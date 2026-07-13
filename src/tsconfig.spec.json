@@ -2,18 +2,24 @@
     "extends": "../tsconfig.json",
     "compilerOptions": {
         "outDir": "../out-tsc/spec",
-        "baseUrl": "./",
         "types": [
-            "jasmine",
+            "vitest/globals",
             "node"
         ]
     },
     "files": [
-        "test.ts",
-        "polyfills.ts"
+        "test-setup.ts"
     ],
     "include": [
         "**/*.spec.ts",
         "**/*.d.ts"
-    ]
+    ],
+    "angularCompilerOptions": {
+      "extendedDiagnostics": {
+        "checks": {
+          "nullishCoalescingNotNullable": "suppress",
+          "optionalChainNotNullable": "suppress"
+        }
+      }
+    }
 }
