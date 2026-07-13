@@ -19,7 +19,7 @@ describe('NgxMaterialTimepickerMinutesFaceComponent', () => {
     });
 
     it('should call disableMinutes once period changed', () => {
-        const spy = spyOn(TimepickerTimeUtils, 'disableMinutes');
+        const spy = vi.spyOn(TimepickerTimeUtils, 'disableMinutes');
         const changes: SimpleChanges = {
             period: {
                 currentValue: TimePeriod.PM,
@@ -44,7 +44,7 @@ describe('NgxMaterialTimepickerMinutesFaceComponent', () => {
     });
 
     it('should not call disableMinutes', () => {
-        const spy = spyOn(TimepickerTimeUtils, 'disableMinutes');
+        const spy = vi.spyOn(TimepickerTimeUtils, 'disableMinutes');
         const changes: SimpleChanges = {
             minTime: {
                 currentValue: null,

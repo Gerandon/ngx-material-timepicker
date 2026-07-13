@@ -1,11 +1,12 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-    name: 'activeHour'
+    name: 'activeHour',
+    standalone: false
 })
 export class ActiveHourPipe implements PipeTransform {
 
-    transform(hour: number, currentHour: number, isClockFaceDisabled: boolean): boolean {
+    transform(hour: number | null, currentHour: number | null, isClockFaceDisabled: boolean): boolean {
         if (hour == null || isClockFaceDisabled) {
             return false;
         }

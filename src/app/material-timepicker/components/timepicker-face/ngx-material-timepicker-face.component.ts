@@ -30,7 +30,8 @@ const CLOCK_HAND_STYLES = {
     selector: 'ngx-material-timepicker-face',
     templateUrl: './ngx-material-timepicker-face.component.html',
     styleUrls: ['./ngx-material-timepicker-face.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class NgxMaterialTimepickerFaceComponent implements AfterViewInit, OnChanges, OnDestroy {
 
@@ -40,7 +41,7 @@ export class NgxMaterialTimepickerFaceComponent implements AfterViewInit, OnChan
     innerClockFaceSize = 85;
 
     @Input() faceTime: ClockFaceTime[];
-    @Input() selectedTime: ClockFaceTime;
+    @Input() selectedTime: ClockFaceTime | undefined;
     @Input() unit: TimeUnit;
     @Input() format: number;
     @Input() minutesGap: number;
@@ -52,8 +53,8 @@ export class NgxMaterialTimepickerFaceComponent implements AfterViewInit, OnChan
     @ViewChild('clockHand', {static: true}) clockHand: ElementRef;
 
     private isStarted: boolean;
-    private touchStartHandler: () => any;
-    private touchEndHandler: () => any;
+    private touchStartHandler: (e: any) => any;
+    private touchEndHandler: (e: any) => any;
 
     ngAfterViewInit() {
         this.setClockHandPosition();
@@ -67,7 +68,7 @@ export class NgxMaterialTimepickerFaceComponent implements AfterViewInit, OnChan
         if ((faceTimeChanges && faceTimeChanges.currentValue)
             && (selectedTimeChanges && selectedTimeChanges.currentValue)) {
             /* Set time according to passed an input value */
-            this.selectedTime = this.faceTime.find(time => time.time === this.selectedTime.time);
+            this.selectedTime = this.faceTime.find(time => time.time === this.selectedTime!.time);
         }
         if (selectedTimeChanges && selectedTimeChanges.currentValue) {
             this.setClockHandPosition();
@@ -79,8 +80,8 @@ export class NgxMaterialTimepickerFaceComponent implements AfterViewInit, OnChan
     }
 
 
-    trackByTime(_, time: ClockFaceTime): string | number {
-        return time.time;
+    trackByTime(_: number, time: ClockFaceTime): string | number {
+        return (time.time ?? 0);
     }
 
     @HostListener('mousedown', ['$event'])
@@ -121,7 +122,7 @@ export class NgxMaterialTimepickerFaceComponent implements AfterViewInit, OnChan
 
             /* To let know whether user ended interaction with clock face */
             if (!this.isStarted) {
-                this.timeSelected.next(selectedTime.time);
+                this.timeSelected.next(selectedTime.time as number);
             }
         }
 
@@ -151,8 +152,11 @@ export class NgxMaterialTimepickerFaceComponent implements AfterViewInit, OnChan
     }
 
     private setClockHandPosition(): void {
+        if (!this.selectedTime) {
+            return;
+        }
         if (this.format === 24) {
-            if (this.selectedTime.time > 12 || this.selectedTime.time === 0) {
+            if (this.selectedTime.time! > 12 || this.selectedTime.time === 0) {
                 this.decreaseClockHand();
             } else {
                 this.increaseClockHand();
@@ -163,13 +167,16 @@ export class NgxMaterialTimepickerFaceComponent implements AfterViewInit, OnChan
     }
 
     private selectAvailableTime(): void {
-        const currentTime = this.faceTime.find(time => this.selectedTime.time === time.time);
+        if (!this.selectedTime) {
+            return;
+        }
+        const currentTime = this.faceTime.find(time => this.selectedTime!.time === time.time);
         this.isClockFaceDisabled = this.faceTime.every(time => time.disabled);
 
         if ((currentTime && currentTime.disabled) && !this.isClockFaceDisabled) {
             const availableTime = this.faceTime.find(time => !time.disabled);
 
-            this.timeChange.next(availableTime);
+            this.timeChange.next(availableTime!);
         }
     }
 

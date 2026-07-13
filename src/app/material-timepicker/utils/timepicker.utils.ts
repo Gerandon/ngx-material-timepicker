@@ -9,6 +9,7 @@ export function isSameOrAfter(time: DateTime, compareWith: DateTime, unit: 'hour
     if (unit === 'minutes') {
         return time.hasSame(compareWith, unit) || time.valueOf() > compareWith.valueOf();
     }
+    return false;
 }
 
 export function isSameOrBefore(time: DateTime, compareWith: DateTime, unit: 'hours' | 'minutes' = 'minutes'): boolean {
@@ -18,6 +19,7 @@ export function isSameOrBefore(time: DateTime, compareWith: DateTime, unit: 'hou
     if (unit === 'minutes') {
         return time.hasSame(compareWith, unit) || time.valueOf() <= compareWith.valueOf();
     }
+    return false;
 }
 
 export function isBetween(time: DateTime, before: DateTime, after: DateTime, unit: 'hours' | 'minutes' = 'minutes'): boolean {
@@ -27,6 +29,7 @@ export function isBetween(time: DateTime, before: DateTime, after: DateTime, uni
     if (unit === 'minutes') {
         return isSameOrBefore(time, after) && isSameOrAfter(time, before);
     }
+    return false;
 }
 
 export function isDigit(e: KeyboardEvent) {

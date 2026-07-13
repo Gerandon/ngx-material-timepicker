@@ -1,23 +1,22 @@
 {
-    "extends": "./tsconfig.app.json",
+    "extends": "../tsconfig.json",
     "compilerOptions": {
-        "outDir": "../out-tsc/app",
-        "baseUrl": "./",
-        "types": []
+        "outDir": "../out-tsc/lib",
+        "types": [],
+        "strictPropertyInitialization": false,
+        "ignoreDeprecations": "6.0"
     },
-    "files": [
-        "main.ts",
-        "polyfills.ts"
-    ],
     "include": [
-        "src/**/*.d.ts"
+        "app/material-timepicker/**/*.ts",
+        "app/**/*.d.ts"
     ],
     "exclude": [
-        "src/test.ts",
+        "test.ts",
+        "main.ts",
+        "polyfills.ts",
         "**/*.spec.ts"
     ],
     "angularCompilerOptions": {
-        "enableIvy": true,
         "compilationMode": "partial"
     }
 }

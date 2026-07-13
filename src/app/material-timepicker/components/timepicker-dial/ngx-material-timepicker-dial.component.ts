@@ -21,6 +21,7 @@ import { TimepickerTimeUtils } from '../../utils/timepicker-time.utils';
     templateUrl: 'ngx-material-timepicker-dial.component.html',
     styleUrls: ['ngx-material-timepicker-dial.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class NgxMaterialTimepickerDialComponent implements OnChanges {
 
@@ -36,10 +37,10 @@ export class NgxMaterialTimepickerDialComponent implements OnChanges {
     @Input() hour: number | string;
     @Input() minute: number | string;
     @Input() format: number;
-    @Input() period: TimePeriod;
+    @Input() period: TimePeriod | null;
     @Input() activeTimeUnit: TimeUnit;
-    @Input() minTime: DateTime;
-    @Input() maxTime: DateTime;
+    @Input() minTime?: DateTime;
+    @Input() maxTime?: DateTime;
     @Input() isEditable: boolean;
     @Input() minutesGap: number;
     @Input() hoursOnly: boolean;
@@ -61,7 +62,7 @@ export class NgxMaterialTimepickerDialComponent implements OnChanges {
                 min: this.minTime,
                 max: this.maxTime,
                 format: this.format,
-                period: this.period,
+                period: this.period ?? undefined,
             });
         }
         if (changes['period'] && changes['period'].currentValue
@@ -72,7 +73,7 @@ export class NgxMaterialTimepickerDialComponent implements OnChanges {
                 min: this.minTime,
                 max: this.maxTime,
                 format: this.format,
-                period: this.period,
+                period: this.period ?? undefined,
             });
         }
     }

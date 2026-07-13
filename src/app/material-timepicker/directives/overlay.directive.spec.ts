@@ -1,4 +1,4 @@
-import { Component, DebugElement } from '@angular/core';
+import { Component, DebugElement, ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { OverlayDirective } from './overlay.directive';
 import { By } from '@angular/platform-browser';
@@ -6,7 +6,9 @@ import { NgxMaterialTimepickerEventService } from '../services/ngx-material-time
 
 @Component({
     template: `
-        <div [overlay]="false"><p>Some content</p></div>`
+        <div [overlay]="false"><p>Some content</p></div>`,
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 class TestComponent {
 }
@@ -27,7 +29,7 @@ describe('OverlayDirective', () => {
 
     it('should dispatch click event on click', inject([NgxMaterialTimepickerEventService],
         (service: NgxMaterialTimepickerEventService) => {
-            const spy = spyOn(service, 'dispatchEvent').and.callThrough();
+            const spy = vi.spyOn(service, 'dispatchEvent');
             overlayEl.nativeElement.dispatchEvent(new Event('click'));
             fixture.detectChanges();
             expect(spy).toHaveBeenCalled();
@@ -35,7 +37,7 @@ describe('OverlayDirective', () => {
 
     it('should not dispatch click event on click', inject([NgxMaterialTimepickerEventService],
         (service: NgxMaterialTimepickerEventService) => {
-            const spy = spyOn(service, 'dispatchEvent').and.callThrough();
+            const spy = vi.spyOn(service, 'dispatchEvent');
             directive.preventClick = true;
             overlayEl.nativeElement.dispatchEvent(new Event('click'));
             fixture.detectChanges();

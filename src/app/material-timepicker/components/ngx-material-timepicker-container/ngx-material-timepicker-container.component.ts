@@ -1,9 +1,8 @@
-import { Component, HostListener, Inject, Input, OnDestroy, OnInit, TemplateRef } from '@angular/core';
+import { Component, HostListener, Inject, Input, OnDestroy, OnInit, TemplateRef, ChangeDetectionStrategy } from '@angular/core';
 import { ClockFaceTime } from '../../models/clock-face-time.interface';
 import { TimePeriod } from '../../models/time-period.enum';
 import { TimeUnit } from '../../models/time-unit.enum';
 import { DateTime } from 'luxon';
-import { animate, AnimationEvent, style, transition, trigger } from '@angular/animations';
 import { NgxMaterialTimepickerService } from '../../services/ngx-material-timepicker.service';
 import { Observable, Subject } from 'rxjs';
 import { shareReplay, takeUntil } from 'rxjs/operators';
@@ -23,19 +22,9 @@ export enum AnimationState {
     selector: 'ngx-material-timepicker-container',
     templateUrl: './ngx-material-timepicker-container.component.html',
     styleUrls: ['./ngx-material-timepicker-container.component.scss'],
-    animations: [
-        trigger('timepicker', [
-            transition(`* => ${AnimationState.ENTER}`, [
-                style({transform: 'translateY(-30%)'}),
-                animate('0.2s ease-out', style({transform: 'translateY(0)'}))
-            ]),
-            transition(`${AnimationState.ENTER} => ${AnimationState.LEAVE}`, [
-                style({transform: 'translateY(0)', opacity: 1}),
-                animate('0.2s ease-out', style({transform: 'translateY(-30%)', opacity: 0}))
-            ])
-        ])
-    ],
-    providers: [NgxMaterialTimepickerService]
+    providers: [NgxMaterialTimepickerService],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class NgxMaterialTimepickerContainerComponent implements OnInit, OnDestroy, TimepickerConfig {
 
@@ -83,7 +72,7 @@ export class NgxMaterialTimepickerContainerComponent implements OnInit, OnDestro
 
     private _defaultTime: string;
 
-    private unsubscribe = new Subject();
+    private unsubscribe = new Subject<void>();
 
     constructor(private timepickerService: NgxMaterialTimepickerService,
                 private eventService: NgxMaterialTimepickerEventService,
@@ -98,7 +87,7 @@ export class NgxMaterialTimepickerContainerComponent implements OnInit, OnDestro
 
     ngOnInit(): void {
 
-        this.animationState = !this.disableAnimation && AnimationState.ENTER;
+        this.animationState = AnimationState.ENTER;
 
         this.defineTime();
 
@@ -155,14 +144,14 @@ export class NgxMaterialTimepickerContainerComponent implements OnInit, OnDestro
         this.animationState = AnimationState.LEAVE;
     }
 
-    animationDone(event: AnimationEvent): void {
-        if (event.phaseName === 'done' && event.toState === AnimationState.LEAVE) {
+    animationDone(): void {
+        if (this.animationState === AnimationState.LEAVE) {
             this.timepickerBaseRef.close();
         }
     }
 
     ngOnDestroy(): void {
-        this.unsubscribe.next();
+        this.unsubscribe.next(undefined);
         this.unsubscribe.complete();
     }
 

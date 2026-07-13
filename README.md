@@ -4,6 +4,9 @@
 [![codecov](https://codecov.io/gh/Agranom/ngx-material-timepicker/branch/master/graph/badge.svg?token=4gxj8PFT05)](https://codecov.io/gh/Agranom/ngx-material-timepicker)
 [![npm version](https://badge.fury.io/js/ngx-material-timepicker.svg)](https://badge.fury.io/js/ngx-material-timepicker)
 
+## Forked from: https://github.com/Agranom/ngx-material-timepicker
+### Angular 22+ compatible
+
 Handy multifunctional [material design](https://material.io/guidelines/components/pickers.html#pickers-time-pickers) timepicker for Angular 6.0+
 
 ## Demo

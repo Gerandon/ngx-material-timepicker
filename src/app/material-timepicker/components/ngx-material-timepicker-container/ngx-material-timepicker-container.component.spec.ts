@@ -1,8 +1,7 @@
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 
 import { AnimationState, NgxMaterialTimepickerContainerComponent } from './ngx-material-timepicker-container.component';
-import { Component, EventEmitter, NO_ERRORS_SCHEMA, Output } from '@angular/core';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Component, EventEmitter, NO_ERRORS_SCHEMA, Output, ChangeDetectionStrategy } from '@angular/core';
 import { TimepickerRef } from '../../models/timepicker-ref.interface';
 import { of, Subject } from 'rxjs';
 import { DateTime } from 'luxon';
@@ -13,7 +12,9 @@ import { NgxMaterialTimepickerEventService } from '../../services/ngx-material-t
 import { TIME_LOCALE } from '../../tokens/time-locale.token';
 
 @Component({
-    template: ''
+    template: '',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 class TimepickerBaseRefStub implements TimepickerRef {
     timeUpdated = new Subject<string>().asObservable();
@@ -34,7 +35,6 @@ describe('NgxMaterialTimepickerContainerComponent', () => {
 
     beforeEach(() => {
         fixture = TestBed.configureTestingModule({
-            imports: [BrowserAnimationsModule],
             declarations: [
                 NgxMaterialTimepickerContainerComponent,
                 TimepickerBaseRefStub
@@ -54,7 +54,7 @@ describe('NgxMaterialTimepickerContainerComponent', () => {
         component = fixture.componentInstance;
         timepickerBaseRefStub = TestBed.createComponent(TimepickerBaseRefStub).componentInstance;
         component.timepickerBaseRef = timepickerBaseRefStub;
-        eventService = TestBed.get(NgxMaterialTimepickerEventService);
+        eventService = TestBed.inject(NgxMaterialTimepickerEventService);
         fixture.detectChanges();
     });
 
@@ -74,7 +74,7 @@ describe('NgxMaterialTimepickerContainerComponent', () => {
 
     describe('setTime', () => {
         it('should emit time on setTime and call close fn', waitForAsync(() => {
-            const spy = spyOn(component, 'close');
+            const spy = vi.spyOn(component, 'close');
 
             component.timepickerBaseRef.timeSet.subscribe(time => expect(time).toBeDefined());
             component.setTime();
@@ -252,7 +252,7 @@ describe('NgxMaterialTimepickerContainerComponent', () => {
     describe('close', () => {
 
         it('should call close method of timepickerBaseRef and not change animation state', () => {
-            const spy = spyOn(timepickerBaseRefStub, 'close');
+            const spy = vi.spyOn(timepickerBaseRefStub, 'close');
             component.animationState = AnimationState.ENTER;
             component.disableAnimation = true;
 
@@ -262,7 +262,7 @@ describe('NgxMaterialTimepickerContainerComponent', () => {
         });
 
         it(`should not call timepickerBaseRef's close method and change animation state to 'leave' `, () => {
-            const spy = spyOn(timepickerBaseRefStub, 'close');
+            const spy = vi.spyOn(timepickerBaseRefStub, 'close');
             component.animationState = AnimationState.ENTER;
             component.disableAnimation = false;
 
@@ -274,27 +274,19 @@ describe('NgxMaterialTimepickerContainerComponent', () => {
 
     describe('animationDone', () => {
 
-        it(`should call timepickerBaseRef's close method if animation toState is 'leave' on animationDone`, () => {
-            const event = {
-                phaseName: 'done',
-                toState: 'leave',
-            };
-            const spy = spyOn(timepickerBaseRefStub, 'close');
+        it(`should call timepickerBaseRef's close method after leave animation ends`, () => {
+            const spy = vi.spyOn(timepickerBaseRefStub, 'close');
+            component.animationState = AnimationState.LEAVE;
 
-            // @ts-ignore
-            component.animationDone(event as AnimationEvent);
+            component.animationDone();
             expect(spy).toHaveBeenCalled();
         });
 
-        it(`should not call timepickerBaseRef's close method if animation toState is not 'leave' on animationDone`, () => {
-            const event = {
-                phaseName: 'done',
-                toState: 'enter',
-            };
-            const spy = spyOn(timepickerBaseRefStub, 'close');
+        it(`should not call timepickerBaseRef's close method if not leaving`, () => {
+            const spy = vi.spyOn(timepickerBaseRefStub, 'close');
 
-            // @ts-ignore
-            component.animationDone(event as AnimationEvent);
+            component.animationState = AnimationState.ENTER;
+            component.animationDone();
             expect(spy).toHaveBeenCalledTimes(0);
         });
     });
@@ -307,7 +299,7 @@ describe('NgxMaterialTimepickerContainerComponent', () => {
                 stopPropagation: () => null,
                 type: 'keydown'
             };
-            const spy = spyOn(eventService, 'dispatchEvent');
+            const spy = vi.spyOn(eventService, 'dispatchEvent');
             component.onKeydown(event as KeyboardEvent);
 
             expect(spy).toHaveBeenCalledWith(event as KeyboardEvent);

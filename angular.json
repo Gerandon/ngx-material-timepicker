@@ -9,13 +9,13 @@
             "projectType": "application",
             "architect": {
                 "build": {
-                    "builder": "@angular-devkit/build-angular:browser",
+                    "builder": "@angular/build:application",
                     "options": {
                         "outputPath": "dist",
                         "index": "src/index.html",
-                        "main": "src/main.ts",
+                        "browser": "src/main.ts",
                         "tsConfig": "src/tsconfig.app.json",
-                        "polyfills": "src/polyfills.ts",
+                        "polyfills": ["zone.js"],
                         "assets": [
                             "src/assets",
                             "src/favicon.ico"
@@ -23,13 +23,18 @@
                         "styles": [
                             "src/styles.scss"
                         ],
+                        "stylePreprocessorOptions": {
+                            "includePaths": [
+                                "src/styles"
+                            ],
+                            "sass": {
+                                "silenceDeprecations": ["color-functions", "global-builtin", "import"]
+                            }
+                        },
                         "scripts": [],
-                        "vendorChunk": true,
                         "extractLicenses": false,
-                        "buildOptimizer": false,
                         "sourceMap": true,
-                        "optimization": false,
-                        "namedChunks": true
+                        "optimization": false
                     },
                     "configurations": {
                         "production": {
@@ -43,105 +48,102 @@
                             "optimization": true,
                             "outputHashing": "all",
                             "sourceMap": false,
-                            "namedChunks": false,
                             "extractLicenses": true,
-                            "vendorChunk": false,
-                            "buildOptimizer": true,
                             "fileReplacements": [
                                 {
                                     "replace": "src/environments/environment.ts",
                                     "with": "src/environments/environment.prod.ts"
                                 }
                             ]
+                        },
+                        "development": {
+                            "optimization": false,
+                            "extractLicenses": false,
+                            "sourceMap": true
                         }
                     },
                     "defaultConfiguration": ""
                 },
                 "serve": {
-                    "builder": "@angular-devkit/build-angular:dev-server",
+                    "builder": "@angular/build:dev-server",
                     "options": {
-                        "browserTarget": "ngx-material-timepicker:build"
+                      "buildTarget": "ngx-material-timepicker:build"
                     },
                     "configurations": {
                         "production": {
-                            "browserTarget": "ngx-material-timepicker:build:production"
+                          "buildTarget": "ngx-material-timepicker:build:production"
                         }
                     }
                 },
                 "extract-i18n": {
                     "builder": "@angular-devkit/build-angular:extract-i18n",
                     "options": {
-                        "browserTarget": "ngx-material-timepicker:build"
+                      "buildTarget": "ngx-material-timepicker:build"
                     }
                 },
                 "test": {
-                    "builder": "@angular-devkit/build-angular:karma",
+                    "builder": "@angular/build:unit-test",
                     "options": {
-                        "main": "src/test.ts",
-                        "karmaConfig": "./karma.conf.js",
-                        "polyfills": "src/polyfills.ts",
                         "tsConfig": "src/tsconfig.spec.json",
-                        "scripts": [],
-                        "styles": [
-                            "src/styles.scss"
+                        "buildTarget": "ngx-material-timepicker:build:development",
+                        "runnerConfig": "vitest.config.ts",
+                        "polyfills": [
+                            "zone.js",
+                            "zone.js/plugins/vitest-patch"
                         ],
-                        "assets": [
-                            "src/assets",
-                            "src/favicon.ico"
-                        ]
+                        "stylePreprocessorOptions": {
+                            "includePaths": [
+                                "src/styles"
+                            ],
+                            "sass": {
+                                "silenceDeprecations": ["color-functions", "global-builtin", "import"]
+                            }
+                        }
                     }
                 },
                 "lint": {
-                    "builder": "@angular-devkit/build-angular:tslint",
+                    "builder": "@angular-eslint/builder:lint",
                     "options": {
-                        "tsConfig": [
-                            "src/tsconfig.app.json",
-                            "src/tsconfig.spec.json"
-                        ],
-                        "exclude": [
-                            "**/node_modules/**"
-                        ]
-                    }
-                }
-            }
-        },
-        "ngx-material-timepicker-e2e": {
-            "root": "",
-            "sourceRoot": "",
-            "projectType": "application",
-            "architect": {
-                "e2e": {
-                    "builder": "@angular-devkit/build-angular:protractor",
-                    "options": {
-                        "protractorConfig": "./protractor.conf.js",
-                        "devServerTarget": "ngx-material-timepicker:serve"
-                    }
-                },
-                "lint": {
-                    "builder": "@angular-devkit/build-angular:tslint",
-                    "options": {
-                        "tsConfig": [
-                            "e2e/tsconfig.e2e.json"
-                        ],
-                        "exclude": [
-                            "**/node_modules/**"
+                        "lintFilePatterns": [
+                            "src/**/*.ts",
+                            "src/**/*.html"
                         ]
                     }
                 }
             }
         }
     },
-    "defaultProject": "ngx-material-timepicker",
     "schematics": {
         "@schematics/angular:component": {
             "prefix": "app",
-            "style": "scss"
+            "style": "scss",
+            "type": "component"
         },
         "@schematics/angular:directive": {
-            "prefix": "app"
+            "prefix": "app",
+            "type": "directive"
+        },
+        "@schematics/angular:service": {
+          "type": "service"
+        },
+        "@schematics/angular:guard": {
+          "typeSeparator": "."
+        },
+        "@schematics/angular:interceptor": {
+          "typeSeparator": "."
+        },
+        "@schematics/angular:module": {
+          "typeSeparator": "."
+        },
+        "@schematics/angular:pipe": {
+          "typeSeparator": "."
+        },
+        "@schematics/angular:resolver": {
+          "typeSeparator": "."
         }
     },
     "cli": {
-        "analytics": "1486e78d-a4fb-473e-b954-d96de369f267"
+        "analytics": "1486e78d-a4fb-473e-b954-d96de369f267",
+        "schematicCollections": ["angular-eslint"]
     }
 }

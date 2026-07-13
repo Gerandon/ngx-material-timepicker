@@ -1,11 +1,13 @@
-import {Component, ContentChild, Input} from '@angular/core';
+import {Component, ContentChild, Input, ChangeDetectionStrategy} from '@angular/core';
 import {NgxMaterialTimepickerToggleIconDirective} from '../../directives/ngx-material-timepicker-toggle-icon.directive';
 import {NgxMaterialTimepickerComponent} from '../../ngx-material-timepicker.component';
 
 @Component({
     selector: 'ngx-material-timepicker-toggle',
     templateUrl: 'ngx-material-timepicker-toggle.component.html',
-    styleUrls: ['ngx-material-timepicker-toggle.component.scss']
+    styleUrls: ['ngx-material-timepicker-toggle.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 
 export class NgxMaterialTimepickerToggleComponent {
@@ -25,7 +27,7 @@ export class NgxMaterialTimepickerToggleComponent {
 
     @ContentChild(NgxMaterialTimepickerToggleIconDirective, {static: true}) customIcon: NgxMaterialTimepickerToggleIconDirective;
 
-    open(event): void {
+    open(event: MouseEvent): void {
         if (this.timepicker) {
             this.timepicker.open();
             event.stopPropagation();

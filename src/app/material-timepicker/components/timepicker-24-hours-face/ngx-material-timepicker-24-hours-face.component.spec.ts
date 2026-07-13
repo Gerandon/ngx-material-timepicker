@@ -18,7 +18,7 @@ describe('NgxMaterialTimepicker24HoursFaceComponent', () => {
     });
 
     it('should call disableHours', () => {
-        const spy = spyOn(TimepickerTimeUtils, 'disableHours');
+        const spy = vi.spyOn(TimepickerTimeUtils, 'disableHours');
         const time = DateTime.fromJSDate(new Date());
         const format = 24;
         const hours = TimepickerTimeUtils.getHours(format);

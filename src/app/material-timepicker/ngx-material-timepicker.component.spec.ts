@@ -37,8 +37,8 @@ describe('NgxMaterialTimepickerComponent', () => {
         }).createComponent(NgxMaterialTimepickerComponent);
 
         component = fixture.componentInstance;
-        domService = TestBed.get(DomService);
-        eventService = TestBed.get(NgxMaterialTimepickerEventService);
+        domService = TestBed.inject(DomService);
+        eventService = TestBed.inject(NgxMaterialTimepickerEventService);
     });
 
     describe('registerInput', () => {
@@ -92,7 +92,7 @@ describe('NgxMaterialTimepickerComponent', () => {
 
         it(`should call appendTimepickerToBody with config and emit event on open call`, waitForAsync(() => {
             let counter = 0;
-            const spy = spyOn(domService, 'appendTimepickerToBody');
+            const spy = vi.spyOn(domService, 'appendTimepickerToBody');
             const expectedConfig: TimepickerConfig = {
                 preventOverlayClick: false,
                 enableKeyboardInput: false,
@@ -143,7 +143,7 @@ describe('NgxMaterialTimepickerComponent', () => {
 
         it(`should call destroyTimepicker fn and emit closed event`, () => {
             let counter = 0;
-            const spy = spyOn(domService, 'destroyTimepicker');
+            const spy = vi.spyOn(domService, 'destroyTimepicker');
 
             component.closed.subscribe(() => expect(++counter).toBe(1));
             component.close();
@@ -153,7 +153,7 @@ describe('NgxMaterialTimepickerComponent', () => {
 
 
         it('should call close method if ESC key was pushed', fakeAsync(() => {
-            const spy = spyOn(component, 'close');
+            const spy = vi.spyOn(component, 'close');
             const event = {
                 keyCode: 27,
                 stopPropagation: () => null,
@@ -168,7 +168,7 @@ describe('NgxMaterialTimepickerComponent', () => {
         }));
 
         it('should not call close method if any key, but ESC was pushed', fakeAsync(() => {
-            const spy = spyOn(component, 'close');
+            const spy = vi.spyOn(component, 'close');
             const event = {
                 keyCode: 28,
                 stopPropagation: () => null,
@@ -182,7 +182,7 @@ describe('NgxMaterialTimepickerComponent', () => {
         }));
 
         it('should not call close method if ESC was pushed and isEsc is \'false\' ', fakeAsync(() => {
-            const spy = spyOn(component, 'close');
+            const spy = vi.spyOn(component, 'close');
             const event = {
                 keyCode: 27,
                 stopPropagation: () => null,
@@ -241,7 +241,7 @@ describe('NgxMaterialTimepickerComponent', () => {
     describe('ngxMaterialTimepickerTheme', () => {
 
         it('should display warning message when setting value', () => {
-            const spy = spyOn(console, 'warn');
+            const spy = vi.spyOn(console, 'warn');
 
             component.ngxMaterialTimepickerTheme = {};
             expect(spy).toHaveBeenCalledWith(`'ngxMaterialTimepickerTheme' is deprecated. Use 'theme' instead`);

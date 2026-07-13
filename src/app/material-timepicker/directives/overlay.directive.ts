@@ -2,7 +2,8 @@ import { Directive, HostListener, Input } from '@angular/core';
 import {NgxMaterialTimepickerEventService} from '../services/ngx-material-timepicker-event.service';
 
 @Directive({
-    selector: '[overlay]'
+    selector: '[overlay]',
+    standalone: false
 })
 export class OverlayDirective {
 

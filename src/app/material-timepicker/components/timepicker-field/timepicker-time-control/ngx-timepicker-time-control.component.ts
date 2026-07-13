@@ -21,11 +21,12 @@ import { isDigit } from '../../../utils/timepicker.utils';
     styleUrls: ['./ngx-timepicker-time-control.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [TimeParserPipe, TimeLocalizerPipe],
+    standalone: false
 })
 
 export class NgxTimepickerTimeControlComponent implements OnChanges {
 
-    @Input() time: number;
+    @Input() time: number | null;
     @Input() min: number;
     @Input() max: number;
     @Input() placeholder: string;
@@ -41,7 +42,7 @@ export class NgxTimepickerTimeControlComponent implements OnChanges {
 
     isFocused: boolean;
 
-    private previousTime: number;
+    private previousTime: number | null;
 
     constructor(private timeParser: TimeParserPipe,
                 private timeLocalizerPipe: TimeLocalizerPipe) {
@@ -87,7 +88,7 @@ export class NgxTimepickerTimeControlComponent implements OnChanges {
 
     increase(): void {
         if (!this.disabled) {
-            let nextTime = +this.time + (this.minutesGap || 1);
+            let nextTime = +(this.time ?? 0) + (this.minutesGap || 1);
 
             if (nextTime > this.max) {
                 nextTime = this.min;
@@ -105,7 +106,7 @@ export class NgxTimepickerTimeControlComponent implements OnChanges {
 
     decrease(): void {
         if (!this.disabled) {
-            let previousTime = +this.time - (this.minutesGap || 1);
+            let previousTime = +(this.time ?? 0) - (this.minutesGap || 1);
 
             if (previousTime < this.min) {
                 previousTime = this.minutesGap ? this.max - (this.minutesGap - 1) : this.max;
@@ -130,7 +131,7 @@ export class NgxTimepickerTimeControlComponent implements OnChanges {
         this.isFocused = false;
 
         if (this.previousTime !== this.time) {
-            this.changeTimeIfValid(+this.time);
+            this.changeTimeIfValid(+(this.time ?? 0));
         }
     }
 
@@ -145,7 +146,7 @@ export class NgxTimepickerTimeControlComponent implements OnChanges {
     }
 
     private changeTimeIfValid(value: number | undefined) {
-        if (!isNaN(value)) {
+        if (typeof value === 'number' && !Number.isNaN(value)) {
             this.time = value;
 
             if (this.time > this.max) {
@@ -161,7 +162,7 @@ export class NgxTimepickerTimeControlComponent implements OnChanges {
     }
 
     private isSelectedTimeDisabled(time: number): boolean {
-        return this.timeList.find((faceTime: ClockFaceTime) => faceTime.time === time).disabled;
+        return this.timeList.find((faceTime: ClockFaceTime) => faceTime.time === time)?.disabled ?? false;
     }
 
     private getNextAvailableTime(index: number): number | undefined {
@@ -170,7 +171,7 @@ export class NgxTimepickerTimeControlComponent implements OnChanges {
         for (let i = index + 1; i < maxValue; i++) {
             const time = timeCollection[i];
             if (!time.disabled) {
-                return time.time;
+                return time.time as number;
             }
         }
     }
@@ -179,28 +180,28 @@ export class NgxTimepickerTimeControlComponent implements OnChanges {
         for (let i = index; i >= 0; i--) {
             const time = this.timeList[i];
             if (!time.disabled) {
-                return time.time;
+                return time.time as number;
             }
         }
     }
 
-    private getAvailableTime(currentTime: number, fn: (index: number) => number | undefined): number | undefined {
+    private getAvailableTime(currentTime: number, fn: (index: number) => number | undefined): number {
         const currentTimeIndex = this.timeList.findIndex(time => time.time === currentTime);
         const availableTime = fn(currentTimeIndex);
 
-        return availableTime != null ? availableTime : this.time;
+        return availableTime != null ? availableTime : (this.time ?? currentTime);
     }
 
     private setAvailableTime(): void {
         const availableTime = this.timeList.find(t => !t.disabled);
         if (availableTime != null) {
             this.time = availableTime.time;
-            this.timeChanged.emit(this.time);
+            this.timeChanged.emit(this.time as number);
         }
     }
 }
 
-function concatTime(currentTime: string, nextTime: string): number {
+function concatTime(currentTime: string, nextTime: string): number | undefined {
     const isNumber = /\d/.test(nextTime);
 
     if (isNumber) {

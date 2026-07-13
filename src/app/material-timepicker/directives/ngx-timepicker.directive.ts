@@ -16,10 +16,9 @@ import { TIME_LOCALE } from '../tokens/time-locale.token';
         }
     ],
     host: {
-        '[disabled]': 'disabled',
-        '(change)': 'updateValue($event.target.value)',
-        '(blur)': 'onTouched()',
+        '[attr.disabled]': 'disabled ? "" : null',
     },
+    standalone: false
 })
 export class TimepickerDirective implements ControlValueAccessor, OnDestroy, OnChanges {
 
@@ -141,11 +140,22 @@ export class TimepickerDirective implements ControlValueAccessor, OnDestroy, OnC
     }
 
     @HostListener('click', ['$event'])
-    onClick(event) {
+    onClick(event: MouseEvent) {
         if (!this.disableClick) {
             this._timepicker.open();
             event.stopPropagation();
         }
+    }
+
+    @HostListener('change', ['$event'])
+    onHostChange(event: Event) {
+        const input = event.target as HTMLInputElement | null;
+        this.updateValue(input?.value ?? '');
+    }
+
+    @HostListener('blur')
+    onHostBlur() {
+        this.onTouched();
     }
 
     writeValue(value: string): void {
@@ -206,7 +216,7 @@ export class TimepickerDirective implements ControlValueAccessor, OnDestroy, OnC
             this._value = time;
             this.updateInputValue();
         } else {
-            this.value = null;
+            this.value = '';
             console.warn('Selected time doesn\'t match min or max value');
         }
     }

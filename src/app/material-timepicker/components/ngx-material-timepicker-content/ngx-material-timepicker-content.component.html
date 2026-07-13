@@ -1,13 +1,14 @@
-<div [ngxAppendToInput]="inputElement" *ngIf="appendToInput;else timepickerModal">
+@if (appendToInput) {
+  <div [ngxAppendToInput]="inputElement">
     <!--suppress HtmlUnknownAttribute -->
     <ng-container *ngTemplateOutlet="timepickerOutlet"></ng-container>
-</div>
+  </div>
+} @else {
+  <!--suppress HtmlUnknownAttribute -->
+  <ng-container *ngTemplateOutlet="timepickerOutlet"></ng-container>
+}
 
-<ng-template #timepickerModal>
-    <!--suppress HtmlUnknownAttribute -->
-    <ng-container *ngTemplateOutlet="timepickerOutlet"></ng-container>
-</ng-template>
 
 <ng-template #timepickerOutlet>
-    <ng-content></ng-content>
+  <ng-content></ng-content>
 </ng-template>

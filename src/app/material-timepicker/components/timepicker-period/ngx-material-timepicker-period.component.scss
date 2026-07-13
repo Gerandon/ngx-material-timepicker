@@ -42,3 +42,16 @@
         }
     }
 }
+
+/* Angular 22 animate.enter replacement for the warning animation */
+@keyframes warn-in-out-kf {
+    0% { transform: scale(0); opacity: 0; }
+    10% { transform: scale(1); opacity: 1; }
+    90% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+.warn-in-out {
+    transform-origin: top left;
+    animation: warn-in-out-kf 3.5s ease-out both;
+}

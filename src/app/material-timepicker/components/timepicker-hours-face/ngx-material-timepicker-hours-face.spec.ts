@@ -1,10 +1,12 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import {Component} from '@angular/core';
+import {Component, ChangeDetectionStrategy} from '@angular/core';
 import {NgxMaterialTimepickerHoursFace} from './ngx-material-timepicker-hours-face';
 
 @Component({
-    template: '<h1>Test</h1>'
+    template: '<h1>Test</h1>',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 class Test12HoursComponent extends NgxMaterialTimepickerHoursFace {
     constructor() {
@@ -13,7 +15,9 @@ class Test12HoursComponent extends NgxMaterialTimepickerHoursFace {
 }
 
 @Component({
-    template: '<h1>Test</h1>'
+    template: '<h1>Test</h1>',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 class Test24HoursComponent extends NgxMaterialTimepickerHoursFace {
     constructor() {

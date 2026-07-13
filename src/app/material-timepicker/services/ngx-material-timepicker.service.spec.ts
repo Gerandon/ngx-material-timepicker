@@ -25,7 +25,7 @@ describe('NgxMaterialTimepickerService', () => {
             providers: [NgxMaterialTimepickerService]
         });
 
-        timepickerService = TestBed.get(NgxMaterialTimepickerService);
+        timepickerService = TestBed.inject(NgxMaterialTimepickerService);
         timepickerService.selectedHour.subscribe(hour => selectedHour = hour);
         timepickerService.selectedMinute.subscribe(minute => selectedMinute = minute);
         timepickerService.selectedPeriod.subscribe(period => selectedPeriod = period);
@@ -144,7 +144,7 @@ describe('NgxMaterialTimepickerService', () => {
         const locale = 'en-US';
         const min = TimeAdapter.parseTime('11:00 pm', {locale});
         const max = TimeAdapter.parseTime('11:50 pm', {locale});
-        const spy = spyOn(console, 'error');
+        const spy = vi.spyOn(console, 'error');
 
         timepickerService.setDefaultTimeIfAvailable('11:43 pm', min, max, 12, minutesGap);
         expect(spy).toHaveBeenCalled();
