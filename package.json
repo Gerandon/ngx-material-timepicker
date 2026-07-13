@@ -56,7 +56,7 @@
         "gh-publish": "ng build --configuration production --base-href ngx-material-timepicker && gh-pages -d dist"
     },
     "types": ".src/app/material-timepicker/index.d.ts",
-    "private": true,
+    "private": false,
     "dependencies": {
         "tslib": "^2.4.0"
     },
