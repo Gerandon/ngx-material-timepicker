@@ -1,5 +1,5 @@
 {
-    "name": "ngx-material-timepicker",
+    "name": "@gerandon/ngx-material-timepicker",
     "description": "Handy material design timepicker for angular",
     "version": "22.0.0",
     "license": "MIT",
