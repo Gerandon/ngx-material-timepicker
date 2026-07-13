@@ -16,8 +16,8 @@ export interface TimepickerConfig {
     hoursOnly: boolean;
     format: number;
     minutesGap: number;
-    minTime: DateTime;
-    maxTime: DateTime;
+    minTime: DateTime | undefined;
+    maxTime: DateTime | undefined;
     defaultTime: string;
     time: string;
     timepickerClass: string;

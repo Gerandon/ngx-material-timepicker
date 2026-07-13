@@ -76,6 +76,27 @@
     }
 }
 
+/* New animations for Angular 22 animate.enter/leave */
+@keyframes scale-in-kf {
+    from { transform: scale(0.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes scale-out-kf {
+    from { transform: scale(1); opacity: 1; }
+    to { transform: scale(0.98); opacity: 0; }
+}
+
+.scale-in {
+    transform-origin: top right;
+    animation: scale-in-kf 200ms ease-out both;
+}
+
+.scale-out {
+    transform-origin: top right;
+    animation: scale-out-kf 200ms ease-in both;
+}
+
 .overlay {
     position: fixed;
     width: 100%;

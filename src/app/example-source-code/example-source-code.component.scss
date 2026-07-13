@@ -56,3 +56,24 @@
         margin: 0;
     }
 }
+
+/* New animations for Angular 22 animate.enter/leave */
+@keyframes expand-in-anim {
+    0% { opacity: 0; transform: scaleY(0.98); }
+    100% { opacity: 1; transform: scaleY(1); }
+}
+
+@keyframes collapse-out-anim {
+    0% { opacity: 1; transform: scaleY(1); }
+    100% { opacity: 0; transform: scaleY(0.98); }
+}
+
+.expand-in {
+    transform-origin: top;
+    animation: expand-in-anim 300ms ease-out both;
+}
+
+.collapse-out {
+    transform-origin: top;
+    animation: collapse-out-anim 300ms ease-out both;
+}

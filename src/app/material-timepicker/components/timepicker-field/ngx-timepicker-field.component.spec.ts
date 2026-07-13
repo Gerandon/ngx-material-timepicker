@@ -100,7 +100,7 @@ describe('NgxTimepickerFieldComponent', () => {
         }));
 
         it('should call TimepickerTimeUtils.disableMinutes when hour changes and min/max are set', fakeAsync(() => {
-            const spy = spyOn(TimepickerTimeUtils, 'disableMinutes');
+            const spy = vi.spyOn(TimepickerTimeUtils, 'disableMinutes');
             const minutes = [{time: 1, angle: 0}];
             const format = 12;
             const min = DateTime.fromObject({hour: 11, minute: 12});
@@ -126,7 +126,7 @@ describe('NgxTimepickerFieldComponent', () => {
         }));
 
         it('should not call TimepickerTimeUtils.disableMinutes when selectedHour is undefined', fakeAsync(() => {
-            const spy = spyOn(TimepickerTimeUtils, 'disableMinutes');
+            const spy = vi.spyOn(TimepickerTimeUtils, 'disableMinutes');
             const minutes = [{time: 1, angle: 0}];
             const format = 12;
             const min = DateTime.fromObject({hour: 11, minute: 12});
@@ -150,7 +150,7 @@ describe('NgxTimepickerFieldComponent', () => {
         }));
 
         it('should call TimepickerTimeUtils.disableHours and disable hours (24 format) and minutes if min/max are set', () => {
-            const spy = spyOn(TimepickerTimeUtils, 'disableHours');
+            const spy = vi.spyOn(TimepickerTimeUtils, 'disableHours');
             const hours = [{time: 1, angle: 0}];
             const format = 24;
             const min = DateTime.fromObject({hour: 10, minute: 12});
@@ -160,7 +160,7 @@ describe('NgxTimepickerFieldComponent', () => {
             component.hoursList = hours;
             component.isTimeRangeSet = true;
             component.period = null;
-            spyOn(TimepickerTimeUtils, 'getHours').and.returnValue(hours);
+            vi.spyOn(TimepickerTimeUtils, 'getHours').mockReturnValue(hours as any);
 
             component.ngOnInit();
 
@@ -182,7 +182,7 @@ describe('NgxTimepickerFieldComponent', () => {
         });
 
         it('should update defaultTime when change format dynamically', () => {
-            const spy = spyOn(TimeAdapter, 'formatTime');
+            const spy = vi.spyOn(TimeAdapter, 'formatTime');
             component.timepickerTime = '23:00';
             component.format = 24;
 

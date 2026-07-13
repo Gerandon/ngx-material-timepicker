@@ -1,7 +1,10 @@
 import {AfterViewInit, Directive, ElementRef, Input} from '@angular/core';
 import {NgxMaterialTimepickerTheme} from '../models/ngx-material-timepicker-theme.interface';
 
-@Directive({selector: '[ngxMaterialTimepickerTheme]'})
+@Directive({
+    selector: '[ngxMaterialTimepickerTheme]',
+    standalone: false
+})
 export class NgxMaterialTimepickerThemeDirective implements AfterViewInit {
 
     @Input('ngxMaterialTimepickerTheme') theme: NgxMaterialTimepickerTheme;
@@ -18,7 +21,7 @@ export class NgxMaterialTimepickerThemeDirective implements AfterViewInit {
         }
     }
 
-    private setTheme(theme): void {
+    private setTheme(theme: any): void {
         for (const val in theme) {
             if (theme.hasOwnProperty(val)) {
                 if (typeof theme[val] === 'string') {
@@ -36,6 +39,6 @@ export class NgxMaterialTimepickerThemeDirective implements AfterViewInit {
     }
 }
 
-function camelCaseToDash(myStr) {
+function camelCaseToDash(myStr: string): string {
     return myStr.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
 }

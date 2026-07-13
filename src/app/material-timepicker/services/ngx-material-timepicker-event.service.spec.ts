@@ -7,7 +7,7 @@ describe('NgxMaterialTimepickerService', () => {
         TestBed.configureTestingModule({
             providers: [NgxMaterialTimepickerEventService]
         });
-        eventService = TestBed.get(NgxMaterialTimepickerEventService);
+        eventService = TestBed.inject(NgxMaterialTimepickerEventService);
     });
 
 

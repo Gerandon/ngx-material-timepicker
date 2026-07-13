@@ -1,8 +1,7 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
 import { TimePeriod } from '../../models/time-period.enum';
 import { TimeUnit } from '../../models/time-unit.enum';
 import { ClockFaceTime } from '../../models/clock-face-time.interface';
-import { animate, sequence, style, transition, trigger } from '@angular/animations';
 import { DateTime } from 'luxon';
 import { TimepickerTimeUtils } from '../../utils/timepicker-time.utils';
 
@@ -10,25 +9,15 @@ import { TimepickerTimeUtils } from '../../utils/timepicker-time.utils';
     selector: 'ngx-material-timepicker-period',
     templateUrl: 'ngx-material-timepicker-period.component.html',
     styleUrls: ['ngx-material-timepicker-period.component.scss'],
-    animations: [
-        trigger('scaleInOut', [
-            transition(':enter', [
-                style({transform: 'scale(0)'}),
-                animate('.2s', style({transform: 'scale(1)'})),
-                sequence([
-                    animate('3s', style({opacity: 1})),
-                    animate('.3s', style({opacity: 0}))
-                ])
-            ])
-        ])
-    ]
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class NgxMaterialTimepickerPeriodComponent {
 
     timePeriod = TimePeriod;
     isPeriodAvailable = true;
 
-    @Input() selectedPeriod: TimePeriod;
+    @Input() selectedPeriod: TimePeriod | null;
     @Input() format: number;
     @Input() activeTimeUnit: TimeUnit;
     @Input() hours: ClockFaceTime[];

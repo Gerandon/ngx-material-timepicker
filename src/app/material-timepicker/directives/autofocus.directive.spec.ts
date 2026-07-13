@@ -1,4 +1,4 @@
-import { Component, DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, DebugElement, NO_ERRORS_SCHEMA, ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { AutofocusDirective } from './autofocus.directive';
 import { By } from '@angular/platform-browser';
@@ -6,7 +6,9 @@ import { By } from '@angular/platform-browser';
 @Component({
     template: `
         <button id="button">Push me</button>
-        <input [timepickerAutofocus]="true">`
+        <input [timepickerAutofocus]="true">`,
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 class TestComponent {
 }

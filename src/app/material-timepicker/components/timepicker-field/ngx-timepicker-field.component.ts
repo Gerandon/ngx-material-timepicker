@@ -35,7 +35,8 @@ import { distinctUntilChanged, map, takeUntil, tap } from 'rxjs/operators';
             multi: true
         }
     ],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class NgxTimepickerFieldComponent implements OnInit, OnDestroy, ControlValueAccessor {
 
@@ -90,8 +91,8 @@ export class NgxTimepickerFieldComponent implements OnInit, OnDestroy, ControlVa
         this._min = value;
     }
 
-    get min(): string | DateTime {
-        return this._min;
+    get min(): DateTime | undefined {
+        return this._min as DateTime;
     }
 
     @Input()
@@ -103,8 +104,8 @@ export class NgxTimepickerFieldComponent implements OnInit, OnDestroy, ControlVa
         this._max = value;
     }
 
-    get max(): string | DateTime {
-        return this._max;
+    get max(): DateTime | undefined {
+        return this._max as DateTime;
     }
 
     @Input()
@@ -139,11 +140,11 @@ export class NgxTimepickerFieldComponent implements OnInit, OnDestroy, ControlVa
     private _minutesGap: number;
     private previousFormat: number;
 
-    private unsubscribe$ = new Subject();
+    private unsubscribe$ = new Subject<void>();
 
     private isFirstTimeChange = true;
     private isDefaultTime: boolean;
-    private selectedHour: number;
+    private selectedHour: number | null;
 
     private onChange: (value: string) => void = () => {
     }
@@ -204,12 +205,12 @@ export class NgxTimepickerFieldComponent implements OnInit, OnDestroy, ControlVa
     }
 
     changeHour(hour: number): void {
-        this.timepickerService.hour = this.hoursList.find(h => h.time === hour);
+        this.timepickerService.hour = this.hoursList.find(h => h.time === hour)!;
         this.changeTime();
     }
 
     changeMinute(minute: number): void {
-        this.timepickerService.minute = this.minutesList.find(m => m.time === minute);
+        this.timepickerService.minute = this.minutesList.find(m => m.time === minute)!;
         this.changeTime();
     }
 
@@ -224,7 +225,7 @@ export class NgxTimepickerFieldComponent implements OnInit, OnDestroy, ControlVa
     }
 
     ngOnDestroy(): void {
-        this.unsubscribe$.next();
+        this.unsubscribe$.next(undefined);
         this.unsubscribe$.complete();
     }
 
@@ -264,7 +265,7 @@ export class NgxTimepickerFieldComponent implements OnInit, OnDestroy, ControlVa
     }
 
     private updateAvailableMinutes(): void {
-        this.minutesList = TimepickerTimeUtils.disableMinutes(this.minutesList, this.selectedHour, {
+        this.minutesList = TimepickerTimeUtils.disableMinutes(this.minutesList, this.selectedHour as number, {
             min: this.min as DateTime,
             max: this.max as DateTime,
             format: this.format,
@@ -274,7 +275,7 @@ export class NgxTimepickerFieldComponent implements OnInit, OnDestroy, ControlVa
 
     private updateAvailableTime(): void {
         this.updateAvailableHours();
-        if (this.selectedHour) {
+        if (this.selectedHour != null) {
             this.updateAvailableMinutes();
         }
     }
@@ -287,7 +288,7 @@ export class NgxTimepickerFieldComponent implements OnInit, OnDestroy, ControlVa
         }
     }
 
-    private initTime(time): void {
+    private initTime(time: string): void {
         const isDefaultTimeAvailable = TimeAdapter
             .isTimeAvailable(time, this.min as DateTime, this.max as DateTime, 'minutes', null, this.format);
         if (!isDefaultTimeAvailable) {
@@ -303,7 +304,7 @@ export class NgxTimepickerFieldComponent implements OnInit, OnDestroy, ControlVa
         this.updateTime(time);
     }
 
-    private isPeriodDisabled(period): boolean {
+    private isPeriodDisabled(period: TimePeriod): boolean {
         return TimepickerTimeUtils.disableHours(TimepickerTimeUtils.getHours(12), {
             min: this.min as DateTime,
             max: this.max as DateTime,

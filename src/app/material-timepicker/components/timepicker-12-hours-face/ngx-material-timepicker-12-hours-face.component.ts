@@ -7,12 +7,13 @@ import { TimepickerTimeUtils } from '../../utils/timepicker-time.utils';
 @Component({
     selector: 'ngx-material-timepicker-12-hours-face',
     templateUrl: 'ngx-material-timepicker-12-hours-face.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 
 export class NgxMaterialTimepicker12HoursFaceComponent extends NgxMaterialTimepickerHoursFace implements OnChanges {
 
-    @Input() period: TimePeriod;
+    @Input() period: TimePeriod | null;
 
     constructor() {
         super(12);
@@ -24,7 +25,7 @@ export class NgxMaterialTimepicker12HoursFaceComponent extends NgxMaterialTimepi
                 min: this.minTime,
                 max: this.maxTime,
                 format: this.format,
-                period: this.period
+                period: this.period ?? undefined
             });
         }
     }

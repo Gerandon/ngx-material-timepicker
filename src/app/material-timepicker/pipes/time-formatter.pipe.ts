@@ -3,7 +3,8 @@ import { TimeUnit } from '../models/time-unit.enum';
 import { DateTime } from 'luxon';
 
 @Pipe({
-    name: 'timeFormatter'
+    name: 'timeFormatter',
+    standalone: false
 })
 export class TimeFormatterPipe implements PipeTransform {
 

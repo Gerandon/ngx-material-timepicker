@@ -1,4 +1,4 @@
-import { Component, DebugElement, SimpleChanges } from '@angular/core';
+import { Component, DebugElement, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TimepickerDirective } from './ngx-timepicker.directive';
 import { By } from '@angular/platform-browser';
@@ -10,7 +10,9 @@ import { DateTime } from 'luxon';
     template: `
         <input [ngxTimepicker]="picker">
         <ngx-material-timepicker #picker></ngx-material-timepicker>
-    `
+    `,
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 class TestComponent {
 
@@ -36,13 +38,13 @@ describe('TimepickerDirective', () => {
     });
 
     it('should register NgxMaterialTimepickerComponent', () => {
-        const spy = spyOnProperty(directive, 'timepicker', 'set').and.callThrough();
+        const spy = vi.spyOn(directive as any, 'timepicker', 'set');
         directive.timepicker = timepickerComponent;
         expect(spy).toHaveBeenCalledWith(timepickerComponent);
     });
 
     it('should throw Error if NgxMaterialTimepickerComponent is not defined', () => {
-        spyOnProperty(directive, 'timepicker', 'set').and.callThrough();
+        vi.spyOn(directive as any, 'timepicker', 'set');
         expect(() => directive.timepicker = null).toThrowError('NgxMaterialTimepickerComponent is not defined.' +
             ' Please make sure you passed the timepicker to ngxTimepicker directive');
     });
@@ -60,7 +62,7 @@ describe('TimepickerDirective', () => {
         });
 
         it('should set value and call updateTime  when format changes dynamically', () => {
-            const spy = spyOn(timepickerComponent, 'updateTime');
+            const spy = vi.spyOn(timepickerComponent, 'updateTime');
             directive.timepicker = timepickerComponent;
             directive.value = '11:11 pm';
             directive.format = 12;
@@ -76,7 +78,7 @@ describe('TimepickerDirective', () => {
         });
 
         it('should not call updateTime when format the same as before', () => {
-            const spy = spyOn(timepickerComponent, 'updateTime');
+            const spy = vi.spyOn(timepickerComponent, 'updateTime');
             directive.timepicker = timepickerComponent;
             directive.format = 12;
 
@@ -130,7 +132,7 @@ describe('TimepickerDirective', () => {
 
     it('should call console.warn if time is not between min and max(inclusively) value and reset time', () => {
         directive.timepicker = timepickerComponent;
-        const spy = spyOn(console, 'warn');
+        const spy = vi.spyOn(console, 'warn');
         directive.min = '11:00 am';
         directive.value = '10:00 am';
         expect(spy).toHaveBeenCalledWith(consoleWarnValue);
@@ -167,7 +169,7 @@ describe('TimepickerDirective', () => {
     });
 
     it('should open timepicker on click', () => {
-        const spy = spyOn(timepickerComponent, 'open');
+        const spy = vi.spyOn(timepickerComponent, 'open');
         directive.timepicker = timepickerComponent;
 
         directive.onClick({stopPropagation: () => null});
@@ -175,7 +177,7 @@ describe('TimepickerDirective', () => {
     });
 
     it('should not open timepicker on click if disableClick is true', () => {
-        const spy = spyOn(timepickerComponent, 'open');
+        const spy = vi.spyOn(timepickerComponent, 'open');
         directive.timepicker = timepickerComponent;
         directive.disableClick = true;
 
@@ -202,7 +204,7 @@ describe('TimepickerDirective', () => {
 
     it('should set onChange function on registerOnChange', () => {
         directive.timepicker = timepickerComponent;
-        const spy = spyOn(console, 'log');
+        const spy = vi.spyOn(console, 'log');
         const time = '11:12 am';
 
         directive.registerOnChange(console.log);
@@ -212,7 +214,7 @@ describe('TimepickerDirective', () => {
     });
 
     it('should set onTouch function on registerOnTouched', () => {
-        const spy = spyOn(console, 'log');
+        const spy = vi.spyOn(console, 'log');
 
         directive.registerOnTouched(console.log);
         directive.onTouched();

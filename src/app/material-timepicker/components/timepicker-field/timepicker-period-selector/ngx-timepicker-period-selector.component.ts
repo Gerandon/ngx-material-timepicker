@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Inject, Input, Output } from '@angular/core';
 import { TimePeriod } from '../../../models/time-period.enum';
-import { animate, style, transition, trigger } from '@angular/animations';
 import { TIME_LOCALE } from '../../../tokens/time-locale.token';
 import { Info } from 'luxon';
 
@@ -9,17 +8,7 @@ import { Info } from 'luxon';
     templateUrl: 'ngx-timepicker-period-selector.component.html',
     styleUrls: ['./ngx-timepicker-period-selector.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    animations: [
-        trigger('scaleInOut', [
-            transition(':enter', [
-                style({transform: 'scale(0)', opacity: 0}),
-                animate(200, style({transform: 'scale(1)', opacity: 1}))
-            ]),
-            transition(':leave', [
-                animate(200, style({transform: 'scale(0)', opacity: 0}))
-            ])
-        ])
-    ]
+    standalone: false
 })
 
 export class NgxTimepickerPeriodSelectorComponent {

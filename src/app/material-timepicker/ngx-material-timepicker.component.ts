@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
+import { Component, EventEmitter, Input, Output, TemplateRef, ChangeDetectionStrategy } from '@angular/core';
 import { merge, Subject } from 'rxjs';
 import { NgxMaterialTimepickerEventService } from './services/ngx-material-timepicker-event.service';
 import { filter, takeUntil } from 'rxjs/operators';
@@ -16,6 +16,8 @@ const ESCAPE = 27;
 @Component({
     selector: 'ngx-material-timepicker',
     template: '',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class NgxMaterialTimepickerComponent implements TimepickerRef {
 
@@ -33,8 +35,8 @@ export class NgxMaterialTimepickerComponent implements TimepickerRef {
     @Input() defaultTime: string;
     @Input() timepickerClass: string;
     @Input() theme: NgxMaterialTimepickerTheme;
-    @Input() min: DateTime;
-    @Input() max: DateTime;
+    @Input() min?: DateTime;
+    @Input() max?: DateTime;
     /**
      * @deprecated Since version 5.1.1. Will be deleted on version 6.0.0. Use @Input() theme instead
      */
@@ -76,17 +78,17 @@ export class NgxMaterialTimepickerComponent implements TimepickerRef {
     private _format: number;
     private _ngxMaterialTimepickerTheme: NgxMaterialTimepickerTheme;
     private timepickerInput: TimepickerDirective;
-    private unsubscribe = new Subject();
+    private unsubscribe = new Subject<void>();
 
     constructor(private eventService: NgxMaterialTimepickerEventService,
                 private domService: DomService) {
     }
 
-    get minTime(): DateTime {
+    get minTime(): DateTime | undefined {
         return this.timepickerInput ? (this.timepickerInput.min as DateTime) : this.min;
     }
 
-    get maxTime(): DateTime {
+    get maxTime(): DateTime | undefined {
         return this.timepickerInput ? (this.timepickerInput.max as DateTime) : this.max;
     }
 
@@ -135,13 +137,13 @@ export class NgxMaterialTimepickerComponent implements TimepickerRef {
             timepickerClass: this.timepickerClass,
             inputElement: this.inputElement
         });
-        this.opened.next();
+        this.opened.next(null);
         this.subscribeToEvents();
     }
 
     close(): void {
         this.domService.destroyTimepicker();
-        this.closed.next();
+        this.closed.next(null);
         this.unsubscribeFromEvents();
     }
 
@@ -157,7 +159,7 @@ export class NgxMaterialTimepickerComponent implements TimepickerRef {
     }
 
     private unsubscribeFromEvents(): void {
-        this.unsubscribe.next();
+        this.unsubscribe.next(undefined);
         this.unsubscribe.complete();
     }
 }

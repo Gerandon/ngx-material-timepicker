@@ -1,13 +1,13 @@
 import {
     ApplicationRef,
-    ComponentFactoryResolver,
     ComponentRef,
     EmbeddedViewRef,
     Inject,
     Injectable,
     Injector,
     Optional,
-    Type
+    Type,
+    createComponent
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import {
@@ -22,16 +22,17 @@ export class DomService {
 
     private componentRef: ComponentRef<NgxMaterialTimepickerContainerComponent>;
 
-    constructor(private cfr: ComponentFactoryResolver,
-                private appRef: ApplicationRef,
+    constructor(private appRef: ApplicationRef,
                 private injector: Injector,
                 @Optional() @Inject(DOCUMENT) private document: any) {
     }
 
     appendTimepickerToBody(timepicker: Type<NgxMaterialTimepickerContainerComponent>, config: TimepickerConfig): void {
-        this.componentRef = this.cfr.resolveComponentFactory(timepicker).create(this.injector);
+        this.componentRef = createComponent(timepicker, { environmentInjector: this.appRef.injector, elementInjector: this.injector });
 
-        Object.keys(config).forEach(key => this.componentRef.instance[key] = config[key]);
+        Object.keys(config as any).forEach((key) => {
+            (this.componentRef.instance as any)[key] = (config as any)[key];
+        });
 
         this.appRef.attachView(this.componentRef.hostView);
 

@@ -7,9 +7,9 @@ import { TimepickerTimeUtils } from '../../utils/timepicker-time.utils';
 @Directive()
 export class NgxMaterialTimepickerHoursFace {
 
-    @Input() selectedHour: ClockFaceTime;
-    @Input() minTime: DateTime;
-    @Input() maxTime: DateTime;
+    @Input() selectedHour: ClockFaceTime | null;
+    @Input() minTime?: DateTime;
+    @Input() maxTime?: DateTime;
     @Input() format: number;
 
     @Output() hourChange = new EventEmitter<ClockFaceTime>();

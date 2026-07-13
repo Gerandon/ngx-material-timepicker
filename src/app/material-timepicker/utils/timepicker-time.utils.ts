@@ -2,6 +2,7 @@ import { ClockFaceTime } from '../models/clock-face-time.interface';
 import { TimeAdapter } from '../services/time-adapter';
 import { TimeFormat } from '../models/time-format.enum';
 import { DisabledTimeConfig } from '../models/disabled-time-config.interface';
+import { TimePeriod } from '../models/time-period.enum';
 import { DateTime } from 'luxon';
 
 // @dynamic
@@ -20,7 +21,7 @@ export class TimepickerTimeUtils {
         if (config.min || config.max) {
 
             return hours.map(value => {
-                const hour = config.format === 24 ? value.time : TimeAdapter.formatHour(value.time, config.format, config.period);
+                const hour = config.format === 24 ? (value.time as number) : TimeAdapter.formatHour(value.time as number, config.format, (config.period ?? TimePeriod.AM));
                 const currentTime = DateTime.fromObject({hour}).toFormat(TimeFormat.TWELVE);
 
                 return {
@@ -49,10 +50,10 @@ export class TimepickerTimeUtils {
     static disableMinutes(minutes: ClockFaceTime[], selectedHour: number, config: DisabledTimeConfig) {
         if (config.min || config.max) {
 
-            const hour = TimeAdapter.formatHour(selectedHour, config.format, config.period);
+            const hour = TimeAdapter.formatHour(selectedHour, config.format, (config.period ?? TimePeriod.AM));
 
             return minutes.map(value => {
-                const currentTime = DateTime.fromObject({hour, minute: value.time}).toFormat(TimeFormat.TWELVE);
+                const currentTime = DateTime.fromObject({hour, minute: (value.time ?? 0)}).toFormat(TimeFormat.TWELVE);
 
                 return {
                     ...value,

@@ -2,7 +2,8 @@ import {Directive, ElementRef, Inject, Input, OnChanges, OnDestroy, Optional} fr
 import {DOCUMENT} from '@angular/common';
 
 @Directive({
-    selector: '[timepickerAutofocus]'
+    selector: '[timepickerAutofocus]',
+    standalone: false
 })
 export class AutofocusDirective implements OnChanges, OnDestroy {
 
